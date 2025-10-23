@@ -35,3 +35,21 @@
   align-items: center;
   margin: 0 auto;
 }
+
+.menu_item {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.link_position_last {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.active {
+  color: #4C4CFF;
+}
