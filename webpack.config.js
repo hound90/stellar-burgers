@@ -88,7 +88,11 @@ module.exports = {
   devServer: {
     static: path.join(__dirname, './dist'),
     compress: true,
-    historyApiFallback: true,
+    historyApiFallback: {
+      index: '/index.html', // ⬅️ ВАЖНО для SPA
+      disableDotRule: true
+    },
+    hot: true,
     port: 4000
   }
 };

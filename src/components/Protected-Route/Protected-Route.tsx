@@ -18,12 +18,10 @@ export const ProtectedRoute = ({
   }
 
   if (onlyUnAuth && user) {
-    // Если роут только для неавторизованных, но пользователь авторизован
     return <Navigate to={location.state?.from || '/'} replace />;
   }
 
   if (!onlyUnAuth && !user) {
-    // Если роут защищенный, но пользователь не авторизован
     return <Navigate to='/login' state={{ from: location }} replace />;
   }
 
