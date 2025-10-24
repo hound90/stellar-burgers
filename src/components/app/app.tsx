@@ -62,7 +62,7 @@ const App = () => {
         <Route path='/feed/:number' element={<OrderInfo />} />
         <Route path='*' element={<NotFound404 />} />
 
-        {/* Роуты только для НЕавторизованных */}
+        {/* Роуты только для неавторизованных */}
         <Route
           path='/login'
           element={

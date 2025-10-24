@@ -10,13 +10,11 @@ export const IngredientsCategory = forwardRef<
 >(({ title, titleRef, ingredients }, ref) => {
   // Берем данные из конструктора с защитой
   const { selectedBun, selectedIngredients } = useAppSelector(
-    (state) => state.burgerConstructor // ИЗМЕНИ НА burgerConstructor
+    (state) => state.burgerConstructor
   );
 
   const ingredientsCounters = useMemo(() => {
     const counters: { [key: string]: number } = {};
-
-    // ЗАЩИТА: проверяем что selectedIngredients существует
     if (selectedIngredients) {
       selectedIngredients.forEach((ingredient: TIngredient) => {
         if (!counters[ingredient._id]) counters[ingredient._id] = 0;

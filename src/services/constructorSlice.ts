@@ -16,7 +16,6 @@ const constructorSlice = createSlice({
   initialState,
   reducers: {
     addIngredient: (state, action: PayloadAction<TIngredient>) => {
-      // УБЕДИСЬ что action.payload - простой объект
       if (action.payload.type === 'bun') {
         state.selectedBun = action.payload;
       } else {

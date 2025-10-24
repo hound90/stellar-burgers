@@ -4,7 +4,7 @@ import { OrderInfoUI } from '@ui';
 import { TIngredient } from '@utils-types';
 import { useAppSelector, useAppDispatch } from '../../services/hooks';
 import { useParams } from 'react-router-dom';
-import { fetchOrderByNumber } from '../../services/orderSlice'; // ⬅️ ИМПОРТИРУЙ НОВЫЙ ЭКШЕН
+import { fetchOrderByNumber } from '../../services/orderSlice';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();

@@ -9,13 +9,11 @@ export const createOrder = createAsyncThunk(
     return data.order;
   }
 );
-
-// ⬇️ ДОБАВЬ НОВЫЙ ЭКШЕН
 export const fetchOrderByNumber = createAsyncThunk(
   'order/fetchByNumber',
   async (orderNumber: number) => {
     const data = await getOrderByNumberApi(orderNumber);
-    return data.orders[0]; // API возвращает массив orders, берем первый
+    return data.orders[0];
   }
 );
 
