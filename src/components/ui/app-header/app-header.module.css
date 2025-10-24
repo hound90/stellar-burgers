@@ -50,6 +50,21 @@
   color: inherit;
 }
 
-.active {
-  color: #4C4CFF;
+
+.menu_item p,
+.link_position_last p {
+  color: #8585ad;
+}
+
+.menu_item svg,
+.link_position_last svg {
+  fill: #8585ad;
+}
+
+.active p {
+  color: #f2f2f3;
+}
+
+.active svg {
+  fill: #f2f2f3;
 }

@@ -9,17 +9,15 @@ import { useNavigate } from 'react-router-dom';
 export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  // Берем данные из стора
   const { selectedBun, selectedIngredients } = useAppSelector(
-    (state) => state.burgerConstructor // ИЗМЕНИ НА burgerConstructor
+    (state) => state.burgerConstructor
   );
   const { currentOrder, orderRequest } = useAppSelector((state) => state.order);
   const { user } = useAppSelector((state) => state.user);
 
   const constructorItems = {
     bun: selectedBun,
-    ingredients: selectedIngredients || [] // ЗАЩИТА ОТ UNDEFINED
+    ingredients: selectedIngredients || []
   };
 
   const onOrderClick = () => {
@@ -30,11 +28,10 @@ export const BurgerConstructor: FC = () => {
 
     if (!selectedBun || orderRequest) return;
 
-    // ЗАЩИТА: используем selectedIngredients или пустой массив
     const ingredientsToUse = selectedIngredients || [];
     const orderData = [
       selectedBun._id,
-      ...ingredientsToUse.map((item) => item._id),
+      ...ingredientsToUse.map((item: TIngredient) => item._id),
       selectedBun._id
     ];
 
