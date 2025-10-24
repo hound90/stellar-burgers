@@ -17,14 +17,18 @@ export const ProtectedRoute = ({
     return <div>Проверка авторизации...</div>;
   }
 
+  // Если роут для неавторизованных, но пользователь авторизован
+  // Перенаправляем туда, откуда пришли, или на главную
   if (onlyUnAuth && user) {
-    return <Navigate to={location.state?.from || '/'} replace />;
+    const from = location.state?.from || '/';
+    return <Navigate to={from} replace />;
   }
 
+  // Если роут защищенный, но пользователь не авторизован
+  // Сохраняем запрашиваемую страницу и перенаправляем на логин
   if (!onlyUnAuth && !user) {
     return <Navigate to='/login' state={{ from: location }} replace />;
   }
-
   return children;
 };
 

@@ -1,7 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { loginUserApi, getUserApi, registerUserApi, logoutApi } from '@api';
+import {
+  loginUserApi,
+  getUserApi,
+  registerUserApi,
+  logoutApi,
+  updateUserApi
+} from '@api';
 import { TUser } from '@utils-types';
-import { deleteCookie } from '../utils/cookie';
+import { setCookie, deleteCookie } from '../utils/cookie';
 
 // Вход пользователя
 export const loginUser = createAsyncThunk(
@@ -9,6 +15,16 @@ export const loginUser = createAsyncThunk(
   async (data: { email: string; password: string }) => {
     const response = await loginUserApi(data);
     localStorage.setItem('refreshToken', response.refreshToken);
+    setCookie('accessToken', response.accessToken);
+    return response.user;
+  }
+);
+
+// Обновление данных пользователя
+export const updateUser = createAsyncThunk(
+  'user/update',
+  async (data: { name?: string; email?: string; password?: string }) => {
+    const response = await updateUserApi(data);
     return response.user;
   }
 );
@@ -19,12 +35,20 @@ export const registerUser = createAsyncThunk(
   async (data: { email: string; password: string; name: string }) => {
     const response = await registerUserApi(data);
     localStorage.setItem('refreshToken', response.refreshToken);
+    setCookie('accessToken', response.accessToken);
     return response.user;
   }
 );
 
 // Проверка авторизации при загрузке приложения
 export const checkUserAuth = createAsyncThunk('user/checkAuth', async () => {
+  const refreshToken = localStorage.getItem('refreshToken');
+
+  // Если нет refreshToken, пользователь не авторизован
+  if (!refreshToken) {
+    throw new Error('No refresh token');
+  }
+
   const data = await getUserApi();
   return data.user;
 });
@@ -33,7 +57,7 @@ export const checkUserAuth = createAsyncThunk('user/checkAuth', async () => {
 export const logoutUser = createAsyncThunk('user/logout', async () => {
   await logoutApi();
   localStorage.removeItem('refreshToken');
-  deleteCookie('accessToken');
+  deleteCookie('accessToken'); // ⬅️ УДАЛИ ИЗ КУКИ
 });
 
 interface UserState {
@@ -50,7 +74,6 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    // Отметить что проверка авторизации выполнена
     authChecked: (state) => {
       state.isAuthChecked = true;
     }
@@ -66,6 +89,9 @@ const userSlice = createSlice({
           state.user = action.payload;
         }
       )
+      .addCase(updateUser.fulfilled, (state, action: PayloadAction<TUser>) => {
+        state.user = action.payload;
+      })
       .addCase(
         checkUserAuth.fulfilled,
         (state, action: PayloadAction<TUser>) => {
@@ -74,7 +100,6 @@ const userSlice = createSlice({
         }
       )
       .addCase(checkUserAuth.rejected, (state) => {
-        // Если не авторизован - просто отмечаем что проверили
         state.isAuthChecked = true;
       })
       .addCase(logoutUser.fulfilled, (state) => {

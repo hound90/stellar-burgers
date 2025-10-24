@@ -43,25 +43,15 @@ export const fetchWithRefresh = async <T>(
     const res = await fetch(url, options);
     return await checkResponse<T>(res);
   } catch (err) {
-    const error = err as { message: string };
-
-    // Обрабатываем только ошибку истечения токена
-    if (error.message === 'jwt expired') {
-      try {
-        const refreshData = await refreshToken();
-        if (options.headers) {
-          (options.headers as { [key: string]: string }).authorization =
-            refreshData.accessToken;
-        }
-        const res = await fetch(url, options);
-        return await checkResponse<T>(res);
-      } catch (refreshError) {
-        // Если refresh тоже failed, очищаем токены
-        localStorage.removeItem('refreshToken');
-        return Promise.reject(refreshError);
+    if ((err as { message: string }).message === 'jwt expired') {
+      const refreshData = await refreshToken();
+      if (options.headers) {
+        (options.headers as { [key: string]: string }).authorization =
+          refreshData.accessToken;
       }
+      const res = await fetch(url, options);
+      return await checkResponse<T>(res);
     } else {
-      // Для других ошибок (включая invalid token) просто реджектим
       return Promise.reject(err);
     }
   }

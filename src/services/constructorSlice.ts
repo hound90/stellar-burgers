@@ -6,7 +6,6 @@ interface ConstructorState {
   selectedIngredients: TIngredient[];
 }
 
-
 const initialState: ConstructorState = {
   selectedBun: null,
   selectedIngredients: []
