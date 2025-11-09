@@ -35,3 +35,36 @@
   align-items: center;
   margin: 0 auto;
 }
+
+.menu_item {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.link_position_last {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+
+.menu_item p,
+.link_position_last p {
+  color: #8585ad;
+}
+
+.menu_item svg,
+.link_position_last svg {
+  fill: #8585ad;
+}
+
+.active p {
+  color: #f2f2f3;
+}
+
+.active svg {
+  fill: #f2f2f3;
+}
