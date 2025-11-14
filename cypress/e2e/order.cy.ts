@@ -7,9 +7,15 @@ describe('Создание заказа', () => {
     cy.setCookie('accessToken', 'test-access-token');
     window.localStorage.setItem('refreshToken', 'test-refresh-token');
 
-    cy.visit('http://localhost:4000');
+    cy.visit('/');
     cy.wait('@getIngredients');
     cy.wait('@getUser');
+  });
+
+  afterEach(() => {
+    // Очищаем токены после каждого теста
+    cy.clearCookies();
+    cy.clearLocalStorage();
   });
 
   it('успешно создает заказ и очищает конструктор', () => {
